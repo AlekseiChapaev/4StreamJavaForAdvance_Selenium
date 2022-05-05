@@ -76,7 +76,7 @@ public class MainTest {
     }
 
     @Test
-    public void testPetsmartCheckSearchRow() throws InterruptedException {
+    public void testPetSmartCheckSearchRow() throws InterruptedException {
 
         System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
@@ -87,6 +87,20 @@ public class MainTest {
         driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[@class = \"bold\"]")).getText(), "\"collars\"");
+
         driver.close();
+    }
+
+        @Test
+        public void testPetSmartRedirectToMainPage() throws InterruptedException {
+
+            System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
+            WebDriver driver = new ChromeDriver();
+
+            driver.get("https://www.petsmart.com/");
+            driver.manage().window().maximize();
+            driver.findElement(By.name("q")).sendKeys("collars");
+            driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
+            driver.findElement(By.xpath("//img[@alt = 'PetSmart']")).click();
     }
 }
