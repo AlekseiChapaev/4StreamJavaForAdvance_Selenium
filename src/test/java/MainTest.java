@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +13,7 @@ public class MainTest {
     @Test
     public void testFirstSelenium() throws InterruptedException {
 
-        System.setProperty("webdriver.chrome.driver","C:/QA/4_stream/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
 
         WebDriver driver = new ChromeDriver();
 
@@ -35,8 +36,8 @@ public class MainTest {
     }
 
     @Test
-    public void testEbayFindProduct(){
-        System.setProperty("webdriver.chrome.driver","C:/QA/4_stream/chromedriver.exe");
+    public void testEbayFindProduct() {
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.ebay.com/");
@@ -50,6 +51,42 @@ public class MainTest {
 
         Assert.assertEquals(actualResult.getText(), "ipad");
 
+        driver.close();
+    }
+
+    @Test
+    public void testEbayChangeCountry() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.ebay.com/");
+        driver.manage().window().maximize();
+
+        driver.findElement(By.id("gh-shipto-click")).click();
+
+        driver.findElement(By.xpath("//button[@class = 'expand-btn expand-btn--default menu-button__button']")).click();
+        driver.findElement(By.xpath("//span[@class = 'cn'][contains(text(), 'Albania')]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[@class = 'shipto__close-btn']")).click();
+
+        ////i[@class = 'flgspr gh-flag-bg flaaf']
+        WebElement flag = driver.findElement(By.xpath("//button[@aria-label = 'Ship to Afghanistan']"));
+        Assert.assertTrue(flag.isDisplayed());
+        driver.close();
+    }
+
+    @Test
+    public void testPetsmartCheckSearchRow() throws InterruptedException {
+
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.petsmart.com/");
+        driver.manage().window().maximize();
+        driver.findElement(By.name("q")).sendKeys("collars");
+        driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//span[@class = \"bold\"]")).getText(), "\"collars\"");
         driver.close();
     }
 }
