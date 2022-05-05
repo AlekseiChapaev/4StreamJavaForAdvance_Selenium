@@ -1,20 +1,15 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
 public class MainTest {
 
     @Test
-    public void testFirstSelenium() throws InterruptedException {
-
+    public void testMallFindProduct() {
         System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
-
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.mall.sk/");
@@ -23,15 +18,9 @@ public class MainTest {
         buttonFind.click();
         buttonFind.sendKeys("ipad");
         driver.findElement(By.id("search-button")).click();
-        WebElement res = driver.findElement(By.xpath("//h1[@class='search__page-title']"));
-        WebElement res2 = driver.findElement(By.xpath("//div[@data-sel='productCountNumber']"));
+        WebElement actualResult = driver.findElement(By.xpath("//h1[@class='search__page-title']"));
 
-        res.getAttribute("Ipad");
-
-        Assert.assertEquals(res.getText(), "\n" +
-                "         821 produktov\n" +
-                "      ");
-
+        Assert.assertEquals(actualResult.getText(), "Ipad");
         driver.quit();
     }
 
@@ -50,7 +39,6 @@ public class MainTest {
         WebElement actualResult = driver.findElement(By.xpath("//h1[@class = 'srp-controls__count-heading']/span[@class = 'BOLD'][2]"));
 
         Assert.assertEquals(actualResult.getText(), "ipad");
-
         driver.close();
     }
 
@@ -76,8 +64,7 @@ public class MainTest {
     }
 
     @Test
-    public void testPetSmartCheckSearchRow() throws InterruptedException {
-
+    public void testPetSmartCheckSearchRow() {
         System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
 
@@ -87,20 +74,32 @@ public class MainTest {
         driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[@class = \"bold\"]")).getText(), "\"collars\"");
-
         driver.close();
     }
 
-        @Test
-        public void testPetSmartRedirectToMainPage() throws InterruptedException {
+    @Test
+    public void testPetSmartRedirectToMainPage() {
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
 
-            System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
-            WebDriver driver = new ChromeDriver();
+        driver.get("https://www.petsmart.com/");
+        driver.manage().window().maximize();
+        driver.findElement(By.name("q")).sendKeys("collars");
+        driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
+        driver.findElement(By.xpath("//img[@alt = 'PetSmart']")).click();
 
-            driver.get("https://www.petsmart.com/");
-            driver.manage().window().maximize();
-            driver.findElement(By.name("q")).sendKeys("collars");
-            driver.findElement(By.xpath("//input[@type = 'submit'][1]")).click();
-            driver.findElement(By.xpath("//img[@alt = 'PetSmart']")).click();
+        Assert.assertEquals(driver.findElement(By.className("featuredProductHeaderText")).getText(), "Deals by pet");
+        driver.close();
+    }
+
+    @Test
+    public void testChoosePetsButton(){
+        System.setProperty("webdriver.chrome.driver", "C:/QA/4_stream/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.petsmart.com/");
+        driver.manage().window().maximize();
+        driver.findElement(By.className("flexGridLayout__title--textGray900")).click();
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class = 'flexGridLayout__inlineContent--contentAlignCenter']/img[@alt = 'Cat deals']")).getText(), "Top deals for cats");
     }
 }
